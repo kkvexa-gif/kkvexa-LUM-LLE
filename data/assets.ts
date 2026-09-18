@@ -40,6 +40,10 @@ export interface AssetCollection {
     ritual: string;
     ritualAlt: string;
   };
+  studio: {
+    image: string;
+    alt: string;
+  };
 }
 
 export const assets: AssetCollection = {
@@ -143,5 +147,9 @@ export const assets: AssetCollection = {
     atelierAlt: "Architectural overview of the LUMÉ studio space",
     ritual: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1200&q=85",
     ritualAlt: "The scalp massage and hair ritual experience at LUMÉ",
+  },
+  studio: {
+    image: "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1800&q=85",
+    alt: "LUMÉ Atelier interior with warm natural lighting, tactile linen, and limestone architectural details",
   },
 };

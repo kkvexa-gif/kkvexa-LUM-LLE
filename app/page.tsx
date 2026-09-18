@@ -14,6 +14,7 @@ import { ServiceList } from "@/components/ServiceList";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 import { StylistCard } from "@/components/StylistCard";
 import { TheSpaceGallery } from "@/components/TheSpaceGallery";
+import { StudioLocation } from "@/components/StudioLocation";
 import { MapEmbed } from "@/components/MapEmbed";
 import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from "@/components/ScrollReveal";
 import { ArrowUpRight, ArrowRight, Sparkles, Clock, MapPin, Phone, Mail } from "lucide-react";
@@ -281,77 +282,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 09. LOCATION & HOURS */}
+      {/* 09. LOCATION & THE STUDIO */}
       <section className="py-24 sm:py-32 bg-lume-surface border-b border-lume-ink/10">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <ScrollReveal>
-            <SectionHeading
-              eyebrow="08 — Atelier Location"
-              title="Visit the Studio"
-              subtitle="Centrally located in Milton, Ontario. Reserved parking and tranquil setting."
-              align="split"
-            />
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start pt-4">
-            {/* Contact & Hours Details */}
-            <ScrollReveal className="lg:col-span-5 space-y-8 bg-white p-8 border border-lume-ink/10" delay={0.1}>
-              <div className="space-y-3">
-                <span className="text-[10px] uppercase tracking-widest text-lume-gold font-sans font-semibold">
-                  Studio Info
-                </span>
-                <h3 className="font-serif text-2xl text-lume-ink font-light">
-                  LUMÉ Atelier
-                </h3>
-                <p className="text-sm font-sans text-lume-ink/80 leading-relaxed">
-                  {siteConfig.locationDetails}
-                </p>
-              </div>
-
-              <div className="space-y-3 pt-2 border-t border-lume-ink/10 text-sm font-sans">
-                <div className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 text-lume-gold shrink-0" />
-                  <a href={`tel:${siteConfig.phoneRaw}`} className="hover:text-lume-gold transition-colors">
-                    {siteConfig.phone}
-                  </a>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-lume-gold shrink-0" />
-                  <a href={`mailto:${siteConfig.email}`} className="hover:text-lume-gold transition-colors">
-                    {siteConfig.email}
-                  </a>
-                </div>
-              </div>
-
-              <div className="space-y-3 pt-2 border-t border-lume-ink/10">
-                <p className="text-xs uppercase tracking-widest text-lume-taupe font-sans font-semibold">
-                  Operating Hours
-                </p>
-                <ul className="space-y-2 text-xs font-sans text-lume-ink/80">
-                  {siteConfig.hours.map((h, idx) => (
-                    <li key={idx} className="flex justify-between py-0.5 border-b border-lume-ink/5">
-                      <span className="font-medium">{h.day}</span>
-                      <span className="text-lume-taupe">{h.hours}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="pt-2">
-                <button
-                  onClick={() => openBooking()}
-                  className="w-full py-3 bg-lume-ink text-lume-ivory text-xs uppercase tracking-widest font-sans font-medium hover:bg-lume-brown transition-colors"
-                >
-                  Book Your Visit
-                </button>
-              </div>
-            </ScrollReveal>
-
-            {/* Map Embed */}
-            <ScrollReveal className="lg:col-span-7" delay={0.2}>
-              <MapEmbed />
-            </ScrollReveal>
-          </div>
+          <StudioLocation />
         </div>
       </section>
 

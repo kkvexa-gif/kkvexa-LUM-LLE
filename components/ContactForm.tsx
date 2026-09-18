@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { ArrowUpRight, Check, AlertCircle, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface FormValues {
   name: string;
@@ -26,6 +27,7 @@ export function ContactForm() {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
+  const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -49,7 +51,7 @@ export function ContactForm() {
     if (!values.message.trim()) {
       errs.message = "Please enter your message.";
     } else if (values.message.trim().length < 10) {
-      errs.message = "Please provide a brief description (at least 10 characters).";
+      errs.message = "Please provide at least 10 characters.";
     }
 
     setErrors(errs);
@@ -61,7 +63,6 @@ export function ContactForm() {
   ) => {
     const { name, value } = e.target;
     setValues((prev) => ({ ...prev, [name]: value }));
-    // Clear field error on change
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -73,7 +74,7 @@ export function ContactForm() {
 
     setIsSubmitting(true);
 
-    // Simulate API request in demo mode
+    // Simulate concierge dispatch in demo mode
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
@@ -83,189 +84,253 @@ export function ContactForm() {
         subject: "",
         message: "",
       });
-    }, 800);
+    }, 900);
   };
 
-  if (isSuccess) {
-    return (
-      <div className="bg-lume-surface border border-lume-gold/40 p-8 sm:p-10 text-center space-y-4 shadow-sm animate-fadeIn">
-        <div className="w-12 h-12 bg-lume-gold/20 text-lume-gold rounded-full mx-auto flex items-center justify-center">
-          <CheckCircle2 className="w-6 h-6 text-lume-gold" />
-        </div>
-        <div className="space-y-1.5">
-          <h3 className="font-serif text-2xl sm:text-3xl text-lume-ink font-light">
-            Thank you — your message has been received.
-          </h3>
-          <p className="text-xs sm:text-sm font-sans text-lume-taupe max-w-md mx-auto leading-relaxed">
-            Our concierge team will review your inquiry and respond within one business day.
-          </p>
-        </div>
-        <div className="pt-2">
-          <p className="text-[11px] font-sans text-lume-taupe/80 italic">
-            * Demo Mode: Form submission simulated successfully.
-          </p>
-        </div>
-        <div className="pt-3">
-          <button
-            type="button"
-            onClick={() => setIsSuccess(false)}
-            className="px-6 py-2.5 bg-lume-ink text-lume-ivory text-xs uppercase tracking-widest font-sans font-medium hover:bg-lume-brown transition-colors"
-          >
-            Send Another Inquiry
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <form
-      onSubmit={handleSubmit}
-      noValidate
-      className="space-y-6 bg-white p-6 sm:p-8 lg:p-10 border border-lume-ink/10 shadow-sm"
-    >
-      <div className="space-y-1 pb-2">
-        <span className="text-[10px] uppercase tracking-widest text-lume-gold font-sans font-semibold">
-          Inquiries & Consultations
-        </span>
-        <h3 className="font-serif text-2xl font-light text-lume-ink">
-          Send Us a Message
-        </h3>
-      </div>
+    <div className="w-full">
+      <AnimatePresence mode="wait">
+        {isSuccess ? (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+            className="py-10 px-6 sm:px-8 border border-lume-gold/30 bg-lume-surface/60 space-y-6"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-lume-gold/15 flex items-center justify-center text-lume-gold">
+                <Check className="w-4 h-4" />
+              </div>
+              <span className="text-[11px] uppercase tracking-widest font-sans font-semibold text-lume-gold">
+                Inquiry Logged
+              </span>
+            </div>
 
-      {/* Name Field */}
-      <div>
-        <label
-          htmlFor="contact-name"
-          className="block text-xs uppercase tracking-widest font-sans text-lume-taupe mb-2 font-medium"
-        >
-          Name <span className="text-lume-gold">*</span>
-        </label>
-        <input
-          id="contact-name"
-          name="name"
-          type="text"
-          value={values.name}
-          onChange={handleChange}
-          aria-invalid={!!errors.name}
-          aria-describedby={errors.name ? "name-error" : undefined}
-          placeholder="e.g. Eleanor Vance"
-          className={`w-full px-4 py-3 bg-lume-surface border font-sans text-sm text-lume-ink transition-colors focus-visible:ring-2 focus-visible:ring-lume-gold ${
-            errors.name ? "border-red-500 bg-red-50/20" : "border-lume-ink/15"
-          }`}
-        />
-        {errors.name && (
-          <p id="name-error" className="mt-1.5 text-xs text-red-600 font-sans flex items-center gap-1">
-            <AlertCircle className="w-3.5 h-3.5" />
-            <span>{errors.name}</span>
-          </p>
+            <div className="space-y-2">
+              <h3 className="font-serif text-3xl sm:text-4xl text-lume-ink font-light leading-tight">
+                Thank you — your message has been received.
+              </h3>
+              <p className="text-sm font-sans text-lume-taupe leading-relaxed max-w-lg">
+                Our salon concierge will review your inquiry and be in touch within one business day.
+              </p>
+            </div>
+
+            <div className="pt-2 text-xs font-sans text-lume-taupe/80 italic border-t border-lume-ink/10">
+              * Demo Mode: Inquiry simulation completed. Ready for email gateway integration.
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => setIsSuccess(false)}
+                className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest font-sans font-semibold text-lume-ink hover:text-lume-gold transition-colors pb-1 border-b border-lume-ink/30 hover:border-lume-gold"
+              >
+                <span>Send Another Inquiry</span>
+                <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-lume-gold" />
+              </button>
+            </div>
+          </motion.div>
+        ) : (
+          <form
+            key="form"
+            onSubmit={handleSubmit}
+            noValidate
+            className="space-y-10"
+          >
+            {/* Field: Name */}
+            <div className="relative group">
+              <label
+                htmlFor="contact-name"
+                className={`block text-[11px] uppercase tracking-widest font-sans font-medium transition-colors duration-300 ${
+                  focusedField === "name"
+                    ? "text-lume-gold"
+                    : errors.name
+                    ? "text-red-600"
+                    : "text-lume-taupe"
+                }`}
+              >
+                Your Name <span className="text-lume-gold text-xs">*</span>
+              </label>
+              <input
+                id="contact-name"
+                name="name"
+                type="text"
+                value={values.name}
+                onChange={handleChange}
+                onFocus={() => setFocusedField("name")}
+                onBlur={() => setFocusedField(null)}
+                placeholder="Eleanor Vance"
+                autoComplete="name"
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? "name-error" : undefined}
+                className="w-full pt-3 pb-2.5 bg-transparent border-b border-lume-ink/20 text-base sm:text-lg font-sans text-lume-ink placeholder-lume-taupe/40 focus:outline-none transition-colors duration-300"
+              />
+              {/* Animated underline focus indicator */}
+              <div
+                className={`h-[1.5px] w-full bg-lume-gold transition-transform duration-300 origin-left -mt-[1.5px] ${
+                  focusedField === "name" ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
+              {errors.name && (
+                <p id="name-error" className="mt-2 text-xs text-red-600 font-sans flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                  <span>{errors.name}</span>
+                </p>
+              )}
+            </div>
+
+            {/* Field: Email */}
+            <div className="relative group">
+              <label
+                htmlFor="contact-email"
+                className={`block text-[11px] uppercase tracking-widest font-sans font-medium transition-colors duration-300 ${
+                  focusedField === "email"
+                    ? "text-lume-gold"
+                    : errors.email
+                    ? "text-red-600"
+                    : "text-lume-taupe"
+                }`}
+              >
+                Email Address <span className="text-lume-gold text-xs">*</span>
+              </label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                value={values.email}
+                onChange={handleChange}
+                onFocus={() => setFocusedField("email")}
+                onBlur={() => setFocusedField(null)}
+                placeholder="eleanor@example.com"
+                autoComplete="email"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
+                className="w-full pt-3 pb-2.5 bg-transparent border-b border-lume-ink/20 text-base sm:text-lg font-sans text-lume-ink placeholder-lume-taupe/40 focus:outline-none transition-colors duration-300"
+              />
+              <div
+                className={`h-[1.5px] w-full bg-lume-gold transition-transform duration-300 origin-left -mt-[1.5px] ${
+                  focusedField === "email" ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
+              {errors.email && (
+                <p id="email-error" className="mt-2 text-xs text-red-600 font-sans flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                  <span>{errors.email}</span>
+                </p>
+              )}
+            </div>
+
+            {/* Field: Subject */}
+            <div className="relative group">
+              <label
+                htmlFor="contact-subject"
+                className={`block text-[11px] uppercase tracking-widest font-sans font-medium transition-colors duration-300 ${
+                  focusedField === "subject"
+                    ? "text-lume-gold"
+                    : errors.subject
+                    ? "text-red-600"
+                    : "text-lume-taupe"
+                }`}
+              >
+                Subject <span className="text-lume-gold text-xs">*</span>
+              </label>
+              <input
+                id="contact-subject"
+                name="subject"
+                type="text"
+                value={values.subject}
+                onChange={handleChange}
+                onFocus={() => setFocusedField("subject")}
+                onBlur={() => setFocusedField(null)}
+                placeholder="e.g. Balayage Consultation & Color Matching"
+                aria-invalid={!!errors.subject}
+                aria-describedby={errors.subject ? "subject-error" : undefined}
+                className="w-full pt-3 pb-2.5 bg-transparent border-b border-lume-ink/20 text-base sm:text-lg font-sans text-lume-ink placeholder-lume-taupe/40 focus:outline-none transition-colors duration-300"
+              />
+              <div
+                className={`h-[1.5px] w-full bg-lume-gold transition-transform duration-300 origin-left -mt-[1.5px] ${
+                  focusedField === "subject" ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
+              {errors.subject && (
+                <p id="subject-error" className="mt-2 text-xs text-red-600 font-sans flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                  <span>{errors.subject}</span>
+                </p>
+              )}
+            </div>
+
+            {/* Field: Message */}
+            <div className="relative group">
+              <label
+                htmlFor="contact-message"
+                className={`block text-[11px] uppercase tracking-widest font-sans font-medium transition-colors duration-300 ${
+                  focusedField === "message"
+                    ? "text-lume-gold"
+                    : errors.message
+                    ? "text-red-600"
+                    : "text-lume-taupe"
+                }`}
+              >
+                Your Message <span className="text-lume-gold text-xs">*</span>
+              </label>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows={4}
+                value={values.message}
+                onChange={handleChange}
+                onFocus={() => setFocusedField("message")}
+                onBlur={() => setFocusedField(null)}
+                placeholder="Tell us what you are imagining — hair history, upcoming event, or specific styling questions…"
+                aria-invalid={!!errors.message}
+                aria-describedby={errors.message ? "message-error" : undefined}
+                className="w-full pt-3 pb-2 bg-transparent border-b border-lume-ink/20 text-base sm:text-lg font-sans text-lume-ink placeholder-lume-taupe/40 focus:outline-none transition-colors duration-300 resize-none leading-relaxed"
+              />
+              <div
+                className={`h-[1.5px] w-full bg-lume-gold transition-transform duration-300 origin-left -mt-[1.5px] ${
+                  focusedField === "message" ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
+              {errors.message && (
+                <p id="message-error" className="mt-2 text-xs text-red-600 font-sans flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                  <span>{errors.message}</span>
+                </p>
+              )}
+            </div>
+
+            {/* Editorial Send Button */}
+            <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="group relative inline-flex items-center gap-3 text-xs uppercase tracking-widest font-sans font-semibold text-lume-ink hover:text-lume-gold transition-colors duration-300 py-2.5 pb-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {isSubmitting ? (
+                  <span className="inline-flex items-center gap-2 text-lume-taupe">
+                    <Loader2 className="w-3.5 h-3.5 animate-spin text-lume-gold" />
+                    <span>Sending…</span>
+                  </span>
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <ArrowUpRight className="w-4 h-4 text-lume-gold transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </>
+                )}
+                {/* Minimal underline with expanding hover state */}
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-lume-ink/40 group-hover:bg-lume-gold group-hover:h-[1.5px] transition-all duration-300" />
+              </button>
+
+              <span className="text-[11px] font-sans text-lume-taupe/70">
+                Direct concierge response within 24h
+              </span>
+            </div>
+          </form>
         )}
-      </div>
-
-      {/* Email Field */}
-      <div>
-        <label
-          htmlFor="contact-email"
-          className="block text-xs uppercase tracking-widest font-sans text-lume-taupe mb-2 font-medium"
-        >
-          Email <span className="text-lume-gold">*</span>
-        </label>
-        <input
-          id="contact-email"
-          name="email"
-          type="email"
-          value={values.email}
-          onChange={handleChange}
-          aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? "email-error" : undefined}
-          placeholder="eleanor@example.com"
-          className={`w-full px-4 py-3 bg-lume-surface border font-sans text-sm text-lume-ink transition-colors focus-visible:ring-2 focus-visible:ring-lume-gold ${
-            errors.email ? "border-red-500 bg-red-50/20" : "border-lume-ink/15"
-          }`}
-        />
-        {errors.email && (
-          <p id="email-error" className="mt-1.5 text-xs text-red-600 font-sans flex items-center gap-1">
-            <AlertCircle className="w-3.5 h-3.5" />
-            <span>{errors.email}</span>
-          </p>
-        )}
-      </div>
-
-      {/* Subject Field */}
-      <div>
-        <label
-          htmlFor="contact-subject"
-          className="block text-xs uppercase tracking-widest font-sans text-lume-taupe mb-2 font-medium"
-        >
-          Subject <span className="text-lume-gold">*</span>
-        </label>
-        <input
-          id="contact-subject"
-          name="subject"
-          type="text"
-          value={values.subject}
-          onChange={handleChange}
-          aria-invalid={!!errors.subject}
-          aria-describedby={errors.subject ? "subject-error" : undefined}
-          placeholder="e.g. First-time Balayage Consultation"
-          className={`w-full px-4 py-3 bg-lume-surface border font-sans text-sm text-lume-ink transition-colors focus-visible:ring-2 focus-visible:ring-lume-gold ${
-            errors.subject ? "border-red-500 bg-red-50/20" : "border-lume-ink/15"
-          }`}
-        />
-        {errors.subject && (
-          <p id="subject-error" className="mt-1.5 text-xs text-red-600 font-sans flex items-center gap-1">
-            <AlertCircle className="w-3.5 h-3.5" />
-            <span>{errors.subject}</span>
-          </p>
-        )}
-      </div>
-
-      {/* Message Field */}
-      <div>
-        <label
-          htmlFor="contact-message"
-          className="block text-xs uppercase tracking-widest font-sans text-lume-taupe mb-2 font-medium"
-        >
-          Your message <span className="text-lume-gold">*</span>
-        </label>
-        <textarea
-          id="contact-message"
-          name="message"
-          rows={5}
-          value={values.message}
-          onChange={handleChange}
-          aria-invalid={!!errors.message}
-          aria-describedby={errors.message ? "message-error" : undefined}
-          placeholder="Tell us about your hair history, upcoming event, or specific questions…"
-          className={`w-full px-4 py-3 bg-lume-surface border font-sans text-sm text-lume-ink transition-colors focus-visible:ring-2 focus-visible:ring-lume-gold resize-none ${
-            errors.message ? "border-red-500 bg-red-50/20" : "border-lume-ink/15"
-          }`}
-        />
-        {errors.message && (
-          <p id="message-error" className="mt-1.5 text-xs text-red-600 font-sans flex items-center gap-1">
-            <AlertCircle className="w-3.5 h-3.5" />
-            <span>{errors.message}</span>
-          </p>
-        )}
-      </div>
-
-      {/* Submit Button */}
-      <div className="pt-2">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full sm:w-auto px-8 py-3.5 bg-lume-ink text-lume-ivory text-xs uppercase tracking-widest font-sans font-medium inline-flex items-center justify-center gap-2.5 hover:bg-lume-brown transition-colors disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-lume-gold"
-        >
-          {isSubmitting ? (
-            <span>Sending…</span>
-          ) : (
-            <>
-              <span>Send</span>
-              <Send className="w-3.5 h-3.5 text-lume-gold" />
-            </>
-          )}
-        </button>
-      </div>
-    </form>
+      </AnimatePresence>
+    </div>
   );
 }
