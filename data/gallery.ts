@@ -1,0 +1,151 @@
+export interface GalleryItem {
+  id: string;
+  title: string;
+  category: "Colour" | "Cuts" | "Styling" | "Space";
+  categorySlug: "colour" | "cuts" | "styling" | "space";
+  image: string;
+  alt: string;
+  aspectRatio: "aspect-[4/5]" | "aspect-[3/4]" | "aspect-square" | "aspect-[16/10]";
+  stylist?: string;
+  caption: string;
+}
+
+export const galleryItems: GalleryItem[] = [
+  {
+    id: "gal-1",
+    title: "Sun-Drenched Honey Balayage",
+    category: "Colour",
+    categorySlug: "colour",
+    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=85",
+    alt: "Warm golden honey balayage with lived-in wave styling",
+    aspectRatio: "aspect-[4/5]",
+    stylist: "Maya Chen",
+    caption: "Custom dimensional gloss and low-maintenance soft growth transition.",
+  },
+  {
+    id: "gal-2",
+    title: "Architectural French Bob",
+    category: "Cuts",
+    categorySlug: "cuts",
+    image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=1200&q=85",
+    alt: "Precision chin-length French bob with soft texturized perimeter",
+    aspectRatio: "aspect-[3/4]",
+    stylist: "Olivia Martin",
+    caption: "Clean geometric baseline paired with weightless interior movement.",
+  },
+  {
+    id: "gal-3",
+    title: "The Atelier Light Basin",
+    category: "Space",
+    categorySlug: "space",
+    image: "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1200&q=85",
+    alt: "Minimalist interior of LUMÉ main salon floor",
+    aspectRatio: "aspect-[16/10]",
+    caption: "Natural daylight filtering across brushed travertine and linen.",
+  },
+  {
+    id: "gal-4",
+    title: "Silk Press & Sculpted Waves",
+    category: "Styling",
+    categorySlug: "styling",
+    image: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=1200&q=85",
+    alt: "High-gloss glossy waves cascading with radiant shine",
+    aspectRatio: "aspect-[4/5]",
+    stylist: "Ava Brooks",
+    caption: "Thermal protection infusion and botanical hydration seal.",
+  },
+  {
+    id: "gal-5",
+    title: "Espresso Gloss & Curtain Fringe",
+    category: "Colour",
+    categorySlug: "colour",
+    image: "https://images.unsplash.com/photo-1522337094846-8a818192de1f?auto=format&fit=crop&w=1200&q=85",
+    alt: "Rich espresso brown with face-framing curtain bangs",
+    aspectRatio: "aspect-[3/4]",
+    stylist: "Maya Chen",
+    caption: "High-shine acidic glaze balancing deep brunette undertones.",
+  },
+  {
+    id: "gal-6",
+    title: "The Wash Sanctuary",
+    category: "Space",
+    categorySlug: "space",
+    image: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1200&q=85",
+    alt: "Quiet wash basin room with warm ambient mood lighting",
+    aspectRatio: "aspect-square",
+    caption: "A serene, quiet room dedicated to acoustic calm and scalp rituals.",
+  },
+  {
+    id: "gal-7",
+    title: "Seamless Invisible Wefts",
+    category: "Styling",
+    categorySlug: "styling",
+    image: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=1200&q=85",
+    alt: "Invisible hand-tied extensions with natural blend",
+    aspectRatio: "aspect-[4/5]",
+    stylist: "Sofia Laurent",
+    caption: "Undetectable root transition and feather-light perimeter blending.",
+  },
+  {
+    id: "gal-8",
+    title: "Textured Shag & Soft Shading",
+    category: "Cuts",
+    categorySlug: "cuts",
+    image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=1200&q=85",
+    alt: "Modern layered shag with natural bounce",
+    aspectRatio: "aspect-[3/4]",
+    stylist: "Olivia Martin",
+    caption: "Razor-carved crown layers with effortless air-dried texture.",
+  },
+  {
+    id: "gal-9",
+    title: "Nordic Platinum Dimension",
+    category: "Colour",
+    categorySlug: "colour",
+    image: "https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=1200&q=85",
+    alt: "Luminous cool blonde highlights with subtle root shadow",
+    aspectRatio: "aspect-[4/5]",
+    stylist: "Maya Chen",
+    caption: "Micro-foil precision lightened with bond-preserving peptide elixirs.",
+  },
+  {
+    id: "gal-10",
+    title: "The Colour Dispensary",
+    category: "Space",
+    categorySlug: "space",
+    image: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=1200&q=85",
+    alt: "Artisan pigment bottles and clean glass vessels at LUMÉ",
+    aspectRatio: "aspect-square",
+    caption: "Where botanical shades and bespoke gloss formulas are created.",
+  },
+  {
+    id: "gal-11",
+    title: "Bespoke Long Layering",
+    category: "Cuts",
+    categorySlug: "cuts",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=85",
+    alt: "Polished long layers with soft framing around cheekbones",
+    aspectRatio: "aspect-[3/4]",
+    stylist: "Ava Brooks",
+    caption: "Customized weight distribution that maintains fullness at the perimeter.",
+  },
+  {
+    id: "gal-12",
+    title: "Bridal Texture & Modern Updo",
+    category: "Styling",
+    categorySlug: "styling",
+    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=85",
+    alt: "Soft organic updo styling with wispy face-framing strands",
+    aspectRatio: "aspect-[4/5]",
+    stylist: "Sofia Laurent",
+    caption: "Organic pinning with effortless volume and all-day stability.",
+  },
+];
+
+export const galleryCategories = [
+  { name: "All", slug: "all" },
+  { name: "Colour", slug: "colour" },
+  { name: "Cuts", slug: "cuts" },
+  { name: "Styling", slug: "styling" },
+  { name: "Space", slug: "space" },
+] as const;
