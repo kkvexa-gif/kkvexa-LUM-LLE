@@ -28,6 +28,10 @@ export function Navbar() {
   const { openBooking } = useBooking();
   const shouldReduceMotion = useReducedMotion();
 
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
+
   const isHomepage = pathname === "/";
 
   // Calculate size and theme independently based on Hero boundary
@@ -198,7 +202,11 @@ export function Navbar() {
               <ArrowUpRight className="w-3 h-3 text-lume-gold" />
             </button>
             <button
-              onClick={() => setMobileMenuOpen(true)}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setMobileMenuOpen(true);
+              }}
               className={`h-9 px-3 rounded-[7px] transition-colors duration-300 flex items-center gap-1.5 text-xs font-sans uppercase tracking-wider focus-visible:ring-2 focus-visible:ring-lume-gold ${
                 isDark || isTransition
                   ? "border border-white/20 text-white hover:text-lume-gold hover:border-lume-gold/40"
@@ -206,9 +214,10 @@ export function Navbar() {
               }`}
               aria-label="Open Navigation Menu"
               aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-navigation-drawer"
             >
-              <span className="text-[11px] font-medium">MENU</span>
-              <div className="w-3.5 flex flex-col items-end gap-1">
+              <span className="text-[11px] font-medium pointer-events-none">MENU</span>
+              <div className="w-3.5 flex flex-col items-end gap-1 pointer-events-none">
                 <span className="w-3.5 h-[1.2px] bg-current" />
                 <span className="w-2.5 h-[1.2px] bg-current" />
               </div>
@@ -220,7 +229,7 @@ export function Navbar() {
       {/* Mobile Menu Overlay */}
       <MobileMenu
         isOpen={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
+        onClose={closeMobileMenu}
       />
     </>
   );
